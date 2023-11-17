@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.graduationproject.project.user.User;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -32,6 +33,7 @@ public class Feedback {
 private Integer id;
 private String complaint;
 private Date whenMade;
+@Column(name = "is_read")
 private boolean read;
 @Enumerated(EnumType.STRING)
 private FeedbackType feedbackType;

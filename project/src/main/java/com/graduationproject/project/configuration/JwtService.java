@@ -14,10 +14,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class JwtService {
 
     @Value("${application.security.jwt.expiration}")
@@ -68,7 +66,7 @@ public class JwtService {
         return buildToken(userDetails, extraClaims,this.tokenExpiration);
     }
     public String generateToken(UserDetails userDetails){
-        return generateToken(userDetails, null);
+        return generateToken(userDetails, new HashMap<>());
     }
     public String generateRefreshToken(
       UserDetails userDetails

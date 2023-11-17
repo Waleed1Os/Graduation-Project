@@ -1,5 +1,6 @@
 package com.graduationproject.project.admin;
 
+import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.graduationproject.project.project.Project;
 import com.graduationproject.project.project.ProjectRepository;
 import com.graduationproject.project.project.ProjectTDO;
+import com.graduationproject.project.user.BannedUser;
 import com.graduationproject.project.user.User;
 import com.graduationproject.project.user.UserRepository;
 
@@ -24,19 +26,31 @@ private final ProjectRepository projectRepository;
 
 @Override
 public void banUserByEmail(int adminId, String email) {
-       User user = userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("User not found"));
+      final User user = userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("User not found"));
    user.setAccountNonLocked(false);
-   User admin= userRepository.findById(adminId).orElseThrow(()->new UsernameNotFoundException("User not found"));
-   admin.getUsersBanned().add(user);
+  final User admin= userRepository.findById(adminId).orElseThrow(()->new UsernameNotFoundException("User not found"));
+  final BannedUser bannedUser= BannedUser
+  .builder()
+  .admin(admin)
+  .user(user)
+  .whenBanned(new Date())
+  .build(); 
+   admin.getBannedUsers().add(bannedUser);
    userRepository.saveAll(List.of(user,admin));
 }
 
 @Override
 public void banUserByUsername(int adminId, String username) {
-    User user = userRepository.findByEmail(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
+    final User user = userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
    user.setAccountNonLocked(false);
-   User admin= userRepository.findById(adminId).orElseThrow(()->new UsernameNotFoundException("User not found"));
-   admin.getUsersBanned().add(user);
+  final User admin= userRepository.findById(adminId).orElseThrow(()->new UsernameNotFoundException("User not found"));
+  final BannedUser bannedUser=BannedUser
+  .builder()
+  .admin(admin)
+  .user(user)
+  .whenBanned(new Date())
+  .build(); 
+   admin.getBannedUsers().add(bannedUser);
    userRepository.saveAll(List.of(user,admin));
 }
 

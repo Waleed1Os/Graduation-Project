@@ -24,7 +24,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @Getter
-@Table(name = "reports")
+@Table(name = "support_sessions")
 public class SupportSession {
    @Setter
    private boolean closed;

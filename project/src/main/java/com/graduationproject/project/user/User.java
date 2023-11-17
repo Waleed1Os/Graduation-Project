@@ -14,7 +14,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -54,6 +53,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private Date whenCreated;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "admin",targetEntity = BannedUser.class)
+    private List<BannedUser> bannedUsers;
     //TODO: Decide on whether or not making this a Date or boolean
     private Date premium;
     @OneToMany(mappedBy = "user",targetEntity = Subscription.class)
@@ -66,8 +67,6 @@ public class User implements UserDetails {
     private List<Token> tokens;
     @Default
     private boolean isAccountNonLocked=true;//Whether or not a user is banned if it is false then the user is banned
-    @ElementCollection(fetch = FetchType.LAZY,targetClass = User.class)
-    private List<User> usersBanned;
     public boolean clearHistory(){
         if(!this.projects.isEmpty()){
         this.projects.clear();
