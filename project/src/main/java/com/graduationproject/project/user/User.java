@@ -66,7 +66,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user",targetEntity = Token.class)
     private List<Token> tokens;
     @Default
-    private boolean isAccountNonLocked=true;//Whether or not a user is banned if it is false then the user is banned
+    private boolean accountNonLocked=true;//Whether or not a user is banned if it is false then the user is banned
     public boolean clearHistory(){
         if(!this.projects.isEmpty()){
         this.projects.clear();
@@ -80,13 +80,22 @@ public class User implements UserDetails {
     }
 
     @Override
+    public String getUsername() {
+        return this.username;
+    } 
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.isAccountNonLocked;
+        return this.accountNonLocked;
     }
 
     @Override
@@ -97,7 +106,8 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
        return true;
-    } 
+    }
+
    
     
 }

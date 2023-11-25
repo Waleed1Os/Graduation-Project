@@ -16,6 +16,4 @@ public abstract class Checker {
     public static boolean checkPhoneNumber(String phoneNumber){
         return phoneNumber.matches("\\+[0-9]{2,3}[0-9]{9}");
     }
-
-
 }

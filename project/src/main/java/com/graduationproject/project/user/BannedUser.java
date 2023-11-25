@@ -26,5 +26,6 @@ private Integer Id;
 private User admin;
 @ManyToOne(targetEntity = User.class,fetch = FetchType.LAZY)
 private User user;
-private Date whenBanned;    
+private Date whenBanned;
+private String reason;    
 }

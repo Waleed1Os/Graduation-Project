@@ -1,6 +1,5 @@
 package com.graduationproject.project.feedback;
 
-import java.util.Date;
 
 import com.graduationproject.project.user.User;
 
@@ -32,11 +31,10 @@ public class Feedback {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private Integer id;
 private String complaint;
-private Date whenMade;
 @Column(name = "is_read")
 private boolean read;
 @Enumerated(EnumType.STRING)
-private FeedbackType feedbackType;
+private FeedbackType type;
 @ManyToOne(fetch = FetchType.LAZY,targetEntity = User.class)
 private User user;
 }

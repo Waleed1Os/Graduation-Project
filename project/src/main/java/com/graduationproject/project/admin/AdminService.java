@@ -25,30 +25,32 @@ private final UserRepository userRepository;
 private final ProjectRepository projectRepository;
 
 @Override
-public void banUserByEmail(int adminId, String email) {
+public void banOrUnbanUserByEmail(int adminId, String email,String reason) {
       final User user = userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("User not found"));
-   user.setAccountNonLocked(false);
+   user.setAccountNonLocked(!user.isAccountNonLocked());
   final User admin= userRepository.findById(adminId).orElseThrow(()->new UsernameNotFoundException("User not found"));
   final BannedUser bannedUser= BannedUser
   .builder()
   .admin(admin)
   .user(user)
   .whenBanned(new Date())
+  .reason(reason)
   .build(); 
    admin.getBannedUsers().add(bannedUser);
    userRepository.saveAll(List.of(user,admin));
 }
 
 @Override
-public void banUserByUsername(int adminId, String username) {
+public void banOrUnBanUserByUsername(int adminId, String username,String reason) {
     final User user = userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
-   user.setAccountNonLocked(false);
+   user.setAccountNonLocked(!user.isAccountNonLocked());
   final User admin= userRepository.findById(adminId).orElseThrow(()->new UsernameNotFoundException("User not found"));
   final BannedUser bannedUser=BannedUser
   .builder()
   .admin(admin)
   .user(user)
   .whenBanned(new Date())
+  .reason(reason)
   .build(); 
    admin.getBannedUsers().add(bannedUser);
    userRepository.saveAll(List.of(user,admin));
