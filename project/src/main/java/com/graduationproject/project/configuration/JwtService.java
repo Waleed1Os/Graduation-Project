@@ -76,7 +76,8 @@ public class JwtService {
   }
 
 private Key getSigningKEY(){
-final byte[] keyBytes=Decoders.BASE64.decode(secretKey);    
+final byte[] keyBytes=Decoders.BASE64.decode(secretKey);  
+//SecretKey secretKey = Jwts.SIG.HS256.key().build();  
 return Keys.hmacShaKeyFor(keyBytes);
 }
 
