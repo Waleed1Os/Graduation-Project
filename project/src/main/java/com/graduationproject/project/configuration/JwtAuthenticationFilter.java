@@ -38,7 +38,7 @@ private final TokenRepository tokenRepository;
             return;
         } 
         final String jwt=header.substring(7);
-        final String username=jwtService.extractUsername(header);
+        final String username=jwtService.extractUsername(jwt);
         if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
             final UserDetails userDetails=userDetailsService.loadUserByUsername(username);
             final boolean isStoredTokenValid= tokenRepository.findByToken(jwt).map(token-> !token.isExpired()&&!token.isRevoked()).orElse(false);
