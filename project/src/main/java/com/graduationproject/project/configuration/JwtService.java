@@ -25,7 +25,7 @@ public class JwtService {
     private Long refreTokenExpiration;
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
-
+    
     private Claims extractAllClaims(String jwt){
       return Jwts
       .parser()
@@ -77,7 +77,7 @@ public class JwtService {
 
 private Key getSigningKEY(){
 final byte[] keyBytes=Decoders.BASE64.decode(secretKey);  
-//SecretKey secretKey = Jwts.SIG.HS256.key().build();  
+// return Jwts.SIG.HS256.key().build();  
 return Keys.hmacShaKeyFor(keyBytes);
 }
 

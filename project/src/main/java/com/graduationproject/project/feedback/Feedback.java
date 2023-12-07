@@ -1,9 +1,10 @@
 package com.graduationproject.project.feedback;
 
 
+import java.util.Date;
+
 import com.graduationproject.project.user.User;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -31,8 +32,7 @@ public class Feedback {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private Integer id;
 private String complaint;
-@Column(name = "is_read")
-private boolean read;
+private Date whenMade;
 @Enumerated(EnumType.STRING)
 private FeedbackType type;
 @ManyToOne(fetch = FetchType.LAZY,targetEntity = User.class)
