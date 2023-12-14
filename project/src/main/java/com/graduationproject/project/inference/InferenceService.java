@@ -1,4 +1,4 @@
-package com.graduationproject.project.project;
+package com.graduationproject.project.inference;
 
 import java.util.List;
 
@@ -12,12 +12,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProjectService {
+public class InferenceService {
 // private final ProjectRepository projectRepository;    
 private final UserRepository userRepository;
-public List<Project> getProjects(int id){
+public List<Inference> getInferences(int id){
 final User user = userRepository.findById(id).orElseThrow(()-> new UsernameNotFoundException("User not found"));
-return user.getProjects();
+return user.getInferences();
 }
 
 

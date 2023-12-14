@@ -35,7 +35,7 @@ private final PasswordEncoder passwordEncoder;
 private final AuthenticationManager authenticationManager;
 
 
-public AuthenticationResponse register(RegisterRequest request) {
+public String register(RegisterRequest request) {
 final String email= request.getEmail();
 if(!Checker.cheeckEmail(email)){
     throw new InputMismatchException("Email is not correct"); 
@@ -49,14 +49,16 @@ final User user = User
 .password(passwordEncoder.encode(request.getPassword()))
 .role(Role.CLIENT)
 .username(request.getUsername()).build();
-final User savedUser=userRepository.save(user);
-final String accessToken=jwtService.generateToken(user);
-final String refreshToken=jwtService.generateRefreshToken(user);
-saveUserToken(accessToken, savedUser);
-return AuthenticationResponse
-.builder()
-.accessToken(accessToken)
-.refreshToken(refreshToken).build();
+//final User savedUser=
+userRepository.save(user);
+// final String accessToken=jwtService.generateToken(user);
+// final String refreshToken=jwtService.generateRefreshToken(user);
+// saveUserToken(accessToken, savedUser);
+// return AuthenticationResponse
+// .builder()
+// .accessToken(accessToken)
+// .refreshToken(refreshToken).build();
+return "Welcome";
 }
 public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest){
 final String username=authenticationRequest.getUsername();    
@@ -73,7 +75,7 @@ return AuthenticationResponse
 .build();
 }
  private void revokeAllUserTokens(User user) {
-    List<Token> validUserTokens = tokenRepository.findAllValidTokensByUser(user.getId());
+    List<Token> validUserTokens = tokenRepository.findAllValidTokensByUser(user.getUsername());
     if (validUserTokens.isEmpty())
       return;
     validUserTokens.forEach(token -> {

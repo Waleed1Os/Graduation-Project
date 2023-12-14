@@ -1,4 +1,4 @@
-package com.graduationproject.project.project;
+package com.graduationproject.project.inference;
 
 import java.util.List;
 
@@ -14,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("project")
 @RequiredArgsConstructor
-public class ProjectController {
-private final ProjectService projectService;
+public class InferenceController {
+private final InferenceService inferenceService;
 @GetMapping("/get/all")
-public ResponseEntity<List<Project>> getProjects(@RequestBody int id){
-    return ResponseEntity.ok(projectService.getProjects(id));
+public ResponseEntity<List<Inference>> getProjects(@RequestBody int id){
+    return ResponseEntity.ok(inferenceService.getInferences(id));
 }
 
 }

@@ -3,16 +3,19 @@ package com.graduationproject.project.user;
 import java.util.Date;
 import java.util.List;
 
-import com.graduationproject.project.project.ProjectTDO;
+import com.graduationproject.project.inference.InferenceDTO;
 
 import lombok.Getter;
+import lombok.Setter;
+
 
 @Getter
-public class UserTDO {
+@Setter
+public class UserDTO {
 private Integer id;    
 private String firstName,lastName;
 private String username;
 private String email;
-private List<ProjectTDO> projects; 
+private List<InferenceDTO> projects; 
 private Date whenCreated;
 }

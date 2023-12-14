@@ -25,7 +25,7 @@ public class JwtService {
     private Long refreTokenExpiration;
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
-    
+    @SuppressWarnings("deprecation")
     private Claims extractAllClaims(String jwt){
       return Jwts
       .parser()

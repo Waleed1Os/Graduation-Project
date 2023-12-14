@@ -25,7 +25,7 @@ private Integer Id;
 @ManyToOne(targetEntity=User.class,fetch = FetchType.LAZY)
 private User admin;
 @ManyToOne(targetEntity = User.class,fetch = FetchType.LAZY)
-private User user;
+private User client;
 private Date whenBanned;
 private String reason;    
 }

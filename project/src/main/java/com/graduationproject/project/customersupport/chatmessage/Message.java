@@ -31,5 +31,5 @@ private String message;
 private Date whenSent;
 private User user;
 @ManyToOne(fetch = FetchType.LAZY,targetEntity = SupportSession.class)
-private SupportSession report;
+private SupportSession session;
 }

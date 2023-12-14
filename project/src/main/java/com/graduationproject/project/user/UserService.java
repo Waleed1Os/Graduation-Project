@@ -19,10 +19,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 private final UserRepository userRepository;
-public UserTDO getUser(int id){
+public UserDTO getUser(int id){
     User user=userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("User not found"));
     ModelMapper mapper=new ModelMapper();
-    return mapper.map(user, UserTDO.class);
+    return mapper.map(user, UserDTO.class);
 }
 
 }

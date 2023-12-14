@@ -2,7 +2,7 @@ package com.graduationproject.project.user;
 
 import com.graduationproject.project.customersupport.SupportSession;
 import com.graduationproject.project.feedback.Feedback;
-import com.graduationproject.project.project.Project;
+import com.graduationproject.project.inference.Inference;
 import com.graduationproject.project.subscription.Subscription;
 import com.graduationproject.project.token.Token;
 
@@ -18,11 +18,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,31 +30,27 @@ import lombok.Setter;
 import lombok.Builder.Default;
 
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @Builder
 @Getter
 @Setter
 @Table(name = "users")
 public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
     private String firstName,lastName;
-    @Column(unique = true,nullable = false)
+    @Id
     private String username;
     @Column(unique = true,nullable = false,updatable = false)
     private String email;
     @Column(nullable = false)
     private String password;
-    @OneToMany(mappedBy = "user",targetEntity = Project.class)
-    private List<Project> projects; 
+    @OneToMany(mappedBy = "user",targetEntity = Inference.class)
+    private List<Inference> inferences; 
     @Enumerated(EnumType.STRING)
     private Role role;
     private Date whenCreated;
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "admin",targetEntity = BannedUser.class)
     private List<BannedUser> bannedUsers;
-    //TODO: Decide on whether or not making this a Date or boolean
     private Date premium;
     @OneToMany(mappedBy = "user",targetEntity = Subscription.class)
     private List<Subscription> subscriptions;
@@ -66,10 +61,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user",targetEntity = Token.class)
     private List<Token> tokens;
     @Default
-    private boolean accountNonLocked=true;//Whether or not a user is banned if it is false then the user is banned
+    private boolean notBanned=true;
     public boolean clearHistory(){
-        if(!this.projects.isEmpty()){
-        this.projects.clear();
+        if(!this.inferences.isEmpty()){
+        this.inferences.clear();
         return true;}
         return false;
     }
@@ -95,7 +90,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.accountNonLocked;
+        return this.notBanned;
     }
 
     @Override
@@ -108,6 +103,9 @@ public class User implements UserDetails {
        return true;
     }
 
+public void addBanRequest(BannedUser bannedUser){
+    this.bannedUsers.add(bannedUser);
+}
    
     
 }

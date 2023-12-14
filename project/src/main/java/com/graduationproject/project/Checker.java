@@ -16,6 +16,10 @@ public abstract class Checker {
     public static boolean checkPhoneNumber(String phoneNumber){
         return phoneNumber.matches("\\+[0-9]{2,3}[0-9]{9}");
     }
+    /**
+     * @param query is the Arabic text a user sent and you want to check its validity using the regex otherwise false
+     * @return true if it matches the regex otherwise flase
+     */
 public static boolean checkQuery(String query){
-return query.matches("[\\u0600-\\u06FF\\s?]");}
+return query.matches("[\\u0600-\\u06FF\\s\\d]+");}
 }

@@ -28,11 +28,15 @@ import lombok.Setter;
 public class SupportSession {
    @Setter
    private boolean closed;
-   @OneToMany(mappedBy = "report",targetEntity = Message.class)
+   @OneToMany(mappedBy = "session",targetEntity = Message.class)
    private List<Message> messages;
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Integer id;
    @ManyToOne(fetch = FetchType.LAZY,targetEntity = User.class)
    private User user;
+
+   public void addMessage(Message message){
+      this.messages.add(message);
+   }
 }

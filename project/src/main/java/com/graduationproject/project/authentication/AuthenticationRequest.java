@@ -1,12 +1,13 @@
 package com.graduationproject.project.authentication;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor 
 public class AuthenticationRequest {
-private final String username;
-private final String password;    
+    private String username;
+    private String password;    
 }

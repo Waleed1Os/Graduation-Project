@@ -30,6 +30,7 @@ private final AuthenticationProvider authenticationProvider;
         .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .authenticationProvider(authenticationProvider)
+        .cors(cors -> cors.disable())
         .logout(logout->logout.addLogoutHandler(logoutHandler).logoutSuccessHandler(
         (request, response, authentication) -> SecurityContextHolder.clearContext()).logoutUrl("api/v1/auth/logout")
             );

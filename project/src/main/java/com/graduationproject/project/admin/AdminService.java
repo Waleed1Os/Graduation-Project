@@ -2,15 +2,19 @@ package com.graduationproject.project.admin;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.security.access.prepost.PreAuthorize;
+// import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.graduationproject.project.project.Project;
-import com.graduationproject.project.project.ProjectRepository;
-import com.graduationproject.project.project.ProjectTDO;
+import com.graduationproject.project.customersupport.SupportSession;
+import com.graduationproject.project.customersupport.SupportSessionRepository;
+import com.graduationproject.project.customersupport.chatmessage.Message;
+import com.graduationproject.project.inference.Inference;
+import com.graduationproject.project.inference.InferenceRepository;
+import com.graduationproject.project.inference.InferenceDTO;
 import com.graduationproject.project.user.BannedUser;
 import com.graduationproject.project.user.User;
 import com.graduationproject.project.user.UserRepository;
@@ -19,51 +23,50 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
+// @PreAuthorize("hasRole('ADMIN')")
 public class AdminService implements Admin{
 private final UserRepository userRepository;
-private final ProjectRepository projectRepository;
-
+private final InferenceRepository inferenceRepository;
+private final SupportSessionRepository sessionRepository;
+private final ModelMapper modelMapper;
 @Override
-public void banOrUnbanUserByEmail(int adminId, String email,String reason) {
-      final User user = userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("User not found"));
-   user.setAccountNonLocked(!user.isAccountNonLocked());
-  final User admin= userRepository.findById(adminId).orElseThrow(()->new UsernameNotFoundException("User not found"));
-  final BannedUser bannedUser= BannedUser
-  .builder()
-  .admin(admin)
-  .user(user)
-  .whenBanned(new Date())
-  .reason(reason)
-  .build(); 
-   admin.getBannedUsers().add(bannedUser);
-   userRepository.saveAll(List.of(user,admin));
+public void banOrUnBanUserByUsername(BanRequest banRequest) {
+   
+   final User admin = userRepository.findByUsername(banRequest.getAdminUsername()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+   final User client = userRepository.findByUsername(banRequest.getClientUsername()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+   final BannedUser bannedUser = BannedUser.builder()
+   .admin(admin)
+   .whenBanned(new Date())
+   .client(client)
+   .reason(banRequest.getReason())
+   .build();
+   admin.addBanRequest(bannedUser);
+   client.setNotBanned(false);
+   userRepository.saveAll(List.of(admin,client));
 }
 
-@Override
-public void banOrUnBanUserByUsername(int adminId, String username,String reason) {
-    final User user = userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
-   user.setAccountNonLocked(!user.isAccountNonLocked());
-  final User admin= userRepository.findById(adminId).orElseThrow(()->new UsernameNotFoundException("User not found"));
-  final BannedUser bannedUser=BannedUser
-  .builder()
-  .admin(admin)
-  .user(user)
-  .whenBanned(new Date())
-  .reason(reason)
-  .build(); 
-   admin.getBannedUsers().add(bannedUser);
-   userRepository.saveAll(List.of(user,admin));
-}
 
 @Override
-public void replyToFeedbck(String response, int feedbackId, int adminId) {
+// @Cacheable("sessions")
+public void replyToFeedbck(MessageRequest messageRequest) {
+final SupportSession session = sessionRepository.findById(messageRequest.getSessionId()).orElseThrow();
+final User admin = userRepository.findByUsername(messageRequest.getAdminUsername()).orElseThrow(()-> new UsernameNotFoundException("User not found"));   
+final Message message = Message.builder()
+.message(messageRequest.getMessage())
+.whenSent(new Date())
+.session(session)
+.user(admin)
+.build();
+session.addMessage(message);
+sessionRepository.save(session);
 }
 
-public ProjectTDO getReportedResponses(){
-List<Project> projects=projectRepository.findByCorrect(false);
-ModelMapper mapper=new ModelMapper();
-return mapper.map(projects, ProjectTDO.class);
+public List<InferenceDTO> getReportedResponses(){
+// final List<Inference> inferences = inferenceRepository.findByCorrect(false);
+// return inferences.stream()
+// .map(inference -> modelMapper.map(inference, InferenceDTO.class))
+// .collect(Collectors.toList());
+return inferenceRepository.findByCorrectDTO(false);
 }
 
     

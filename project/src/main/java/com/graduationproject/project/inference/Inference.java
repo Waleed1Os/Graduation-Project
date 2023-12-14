@@ -1,9 +1,11 @@
-package com.graduationproject.project.project;
+package com.graduationproject.project.inference;
 
 import java.util.Date;
+import java.util.List;
 
 import com.graduationproject.project.user.User;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,11 +24,11 @@ import lombok.Builder.Default;
 @Getter
 @Setter
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @Builder
 @Table(name = "projects")
-public class Project {
+public class Inference {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +38,8 @@ public class Project {
     private String query;
     private String response;
     private Date whenMade;
+    @ElementCollection(fetch = FetchType.LAZY,targetClass = String.class)
+    private List<String> incorrectWords;
     @Default
     private boolean correct=true;
 }
