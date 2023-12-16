@@ -72,7 +72,7 @@ public class JwtService {
     public String generateRefreshToken(
       UserDetails userDetails
   ) {
-    return buildToken( userDetails,new HashMap<>(),this.refreTokenExpiration);
+    return buildToken(userDetails,new HashMap<>(),this.refreTokenExpiration);
   }
 
 private Key getSigningKEY(){

@@ -92,31 +92,31 @@ private void saveUserToken(String jwt,User user){
     .build();
     tokenRepository.save(token);
 }
-public void refreshToken(HttpServletRequest request,
+public void refreshToken(
+  HttpServletRequest request,
   HttpServletResponse response
-  ) throws IOException {
-final String header=request.getHeader(HttpHeaders.AUTHORIZATION);
-if(header==null){
+) throws IOException {
+final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
   return;
 }
-final String refreshToken=header.substring(7);
-final String username=jwtService.extractUsername(refreshToken);
-if(username!=null){
-final User user= userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
-if(jwtService.isTokenValid(user, username)){
-final String accessToken= jwtService.generateToken(user);
+
+final String refreshToken = authHeader.substring(7);
+final String username = jwtService.extractUsername(refreshToken);
+if (username != null) {
+final User user = this.userRepository.findByUsername(username)
+      .orElseThrow(()-> new UsernameNotFoundException("User not found"));
+if (jwtService.isTokenValid(user,refreshToken)) {
+final String accessToken = jwtService.generateToken(user);
 revokeAllUserTokens(user);
 saveUserToken(accessToken, user);
 final AuthenticationResponse authResponse = AuthenticationResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-        new ObjectMapper().writeValue(response.getOutputStream(), authResponse);  
+        .accessToken(accessToken)
+        .refreshToken(refreshToken)
+        .build();
+new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
 }
-
 }
-
-
 }
 
 }

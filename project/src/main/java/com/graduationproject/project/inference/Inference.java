@@ -27,7 +27,7 @@ import lombok.Builder.Default;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @Builder
-@Table(name = "projects")
+@Table(name = "inferences")
 public class Inference {
     
     @Id
@@ -38,8 +38,8 @@ public class Inference {
     private String query;
     private String response;
     private Date whenMade;
-    @ElementCollection(fetch = FetchType.LAZY,targetClass = String.class)
-    private List<String> incorrectWords;
     @Default
     private boolean correct=true;
+    @ElementCollection(fetch = FetchType.LAZY,targetClass = String.class)
+    private List<String> incorrectWords;
 }

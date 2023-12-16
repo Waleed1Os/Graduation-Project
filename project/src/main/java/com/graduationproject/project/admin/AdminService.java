@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 // import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 // @PreAuthorize("hasRole('ADMIN')")
-public class AdminService implements Admin{
+public class AdminService implements Admin
+ {
 private final UserRepository userRepository;
 private final InferenceRepository inferenceRepository;
 private final SupportSessionRepository sessionRepository;
@@ -61,12 +64,28 @@ session.addMessage(message);
 sessionRepository.save(session);
 }
 
-public List<InferenceDTO> getReportedResponses(){
-// final List<Inference> inferences = inferenceRepository.findByCorrect(false);
-// return inferences.stream()
-// .map(inference -> modelMapper.map(inference, InferenceDTO.class))
-// .collect(Collectors.toList());
-return inferenceRepository.findByCorrectDTO(false);
+@Override
+public List<InferenceDTO> getReportedResponses(Pageable pageable){
+   Page<Inference> page = inferenceRepository.findByCorrect(false, pageable);
+   return page.getContent().stream()
+              .map(inference -> modelMapper.map(inference, InferenceDTO.class))
+              .collect(Collectors.toList());
+}
+
+
+@Override
+public UserInfoForAdmins getUserInformationByUsername(String username) {
+   final User user = userRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+   return modelMapper.map(user,UserInfoForAdmins.class);
+}
+
+
+@Override
+public UserInfoForAdmins getUserInformationByEmail(String email) {
+  final User user = userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+   return modelMapper.map(user,UserInfoForAdmins.class);
+   
+
 }
 
     

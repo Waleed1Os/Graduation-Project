@@ -26,7 +26,7 @@ private final AuthenticationService authenticationService;
 public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
     return ResponseEntity.ok(authenticationService.authenticate(request));
 } 
-@PostMapping("/register")
+@PostMapping("/signup")
 public ResponseEntity<String> register(@RequestBody RegisterRequest request){
     return ResponseEntity.ok(authenticationService.register(request));
 }
