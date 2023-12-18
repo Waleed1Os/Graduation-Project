@@ -12,10 +12,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDTO {
-private Integer id;    
 private String firstName,lastName;
 private String username;
 private String email;
-private List<InferenceDTO> projects; 
+private List<InferenceDTO> inferences; 
 private Date whenCreated;
 }

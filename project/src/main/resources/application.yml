@@ -34,3 +34,9 @@ spring:
 server:
   error:
     include-message: always
+  #port: 443
+   #ssl:
+      #key-store: keystore.p12
+      #key-store-password: GP2023-2024
+      #keyStoreType: PKCS12
+      #keyAlias: tomcat

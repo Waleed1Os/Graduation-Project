@@ -1,5 +1,6 @@
 package com.graduationproject.project.admin;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,10 +8,11 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-// import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.graduationproject.project.Utils;
 import com.graduationproject.project.customersupport.SupportSession;
 import com.graduationproject.project.customersupport.SupportSessionRepository;
 import com.graduationproject.project.customersupport.chatmessage.Message;
@@ -25,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-// @PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminService implements Admin
  {
 private final UserRepository userRepository;
@@ -33,9 +35,9 @@ private final InferenceRepository inferenceRepository;
 private final SupportSessionRepository sessionRepository;
 private final ModelMapper modelMapper;
 @Override
-public void banOrUnBanUserByUsername(BanRequest banRequest) {
+public void banOrUnBanUserByUsername(BanRequest banRequest,Principal connectedUser) {
    
-   final User admin = userRepository.findByUsername(banRequest.getAdminUsername()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+   final User admin = Utils.getConnectedUser(connectedUser);
    final User client = userRepository.findByUsername(banRequest.getClientUsername()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
    final BannedUser bannedUser = BannedUser.builder()
    .admin(admin)
@@ -51,9 +53,9 @@ public void banOrUnBanUserByUsername(BanRequest banRequest) {
 
 @Override
 // @Cacheable("sessions")
-public void replyToFeedbck(MessageRequest messageRequest) {
+public void replyToFeedbck(MessageRequest messageRequest,Principal connectedUser) {
 final SupportSession session = sessionRepository.findById(messageRequest.getSessionId()).orElseThrow();
-final User admin = userRepository.findByUsername(messageRequest.getAdminUsername()).orElseThrow(()-> new UsernameNotFoundException("User not found"));   
+final User admin = Utils.getConnectedUser(connectedUser);
 final Message message = Message.builder()
 .message(messageRequest.getMessage())
 .whenSent(new Date())

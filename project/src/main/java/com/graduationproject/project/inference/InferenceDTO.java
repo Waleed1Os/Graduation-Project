@@ -19,14 +19,12 @@ private Date whenMade;
 private boolean correct;    
 private List<String> incorrectWords;
 
-// public InferenceDTO(Integer id, String query, String response, Date whenMade, boolean correct) {
-//     this.id = id;
-//     this.query = query;
-//     this.response = response;
-//     this.whenMade = whenMade;
-//     this.correct = correct;
-// }
-public InferenceDTO(List<String> incorrectWords){
-    setIncorrectWords(incorrectWords);
+public InferenceDTO(Integer id, String query, String response, Date whenMade, boolean correct) {
+    this.id = id;
+    this.query = query;
+    this.response = response;
+    this.whenMade = whenMade;
+    this.correct = correct;
 }
+
 }

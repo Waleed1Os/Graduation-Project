@@ -1,12 +1,11 @@
 package com.graduationproject.project.admin;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 public class MessageRequest {
-private final String adminUsername;
-private final int sessionId;
-private final String message;
+private int sessionId;
+private String message;
 }

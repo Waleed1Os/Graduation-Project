@@ -1,7 +1,14 @@
 package com.graduationproject.project;
 
+import lombok.experimental.UtilityClass;
 
-public abstract class Checker {
+
+
+/*
+ * A class that contains only static methods used for user input vlidation  
+ */
+@UtilityClass
+public class Checker {
   /**
   *@param email is the email you want to check its validity using the regex
   *@return true if it matches the regex and of length <=320 (Maximum email length)
@@ -14,7 +21,7 @@ public abstract class Checker {
      * @return true if it matches the regex otherwise flase
      */
     public static boolean checkPhoneNumber(String phoneNumber){
-        return phoneNumber.matches("\\+[0-9]{2,3}[0-9]{9}");
+        return phoneNumber.matches("\\+[0-9]{2,3}[0-9]{12,13}");
     }
     /**
      * @param query is the Arabic text a user sent and you want to check its validity using the regex otherwise false

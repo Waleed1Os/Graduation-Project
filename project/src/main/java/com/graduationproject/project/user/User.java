@@ -104,6 +104,7 @@ public class User implements UserDetails {
     }
 
 public void addBanRequest(BannedUser bannedUser){
+    bannedUser.setAdmin(this);
     this.bannedUsers.add(bannedUser);
 }
    
