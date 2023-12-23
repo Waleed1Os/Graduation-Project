@@ -1,16 +1,18 @@
 package com.graduationproject.project.authentication;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+
+
+
 import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Setter
 public class RegisterRequest {
-private final String firstName;
-private final String lastName;    
-private final String username;
-private final String email;
-private final String password;
+private String firstName;
+private String lastName;    
+private String username;
+private String email;
+private String password;
 }

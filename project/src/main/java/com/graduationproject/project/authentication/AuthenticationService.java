@@ -37,7 +37,7 @@ private final AuthenticationManager authenticationManager;
 
 public String register(RegisterRequest request) {
 final String email= request.getEmail();
-if(!Checker.cheeckEmail(email)){
+if(!Checker.checkEmail(email)){
     throw new InputMismatchException("Email is not correct"); 
 }
 final User user = User
@@ -61,9 +61,9 @@ userRepository.save(user);
 return "Welcome";
 }
 public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest){
-final String username=authenticationRequest.getUsername();    
-authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,authenticationRequest.getPassword()));
-final User user = userRepository.findByUsername(username).orElseThrow();
+final String usernameOrEmail=authenticationRequest.getPrinciple();    
+authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usernameOrEmail,authenticationRequest.getPassword()));
+final User user = Checker.checkEmail(usernameOrEmail)?userRepository.findByEmail(usernameOrEmail).orElseThrow():userRepository.findByUsername(usernameOrEmail).orElseThrow();
 final String accessToken=jwtService.generateToken(user);
 final String refreshToken=jwtService.generateRefreshToken(user);
 revokeAllUserTokens(user);

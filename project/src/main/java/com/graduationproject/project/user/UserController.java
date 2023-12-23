@@ -6,14 +6,12 @@ package com.graduationproject.project.user;
 import java.security.Principal;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
 
@@ -22,12 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
 private final UserService userService;
-    @GetMapping("/{username}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable String username){
-        return ResponseEntity.ok(userService.getUser(username));
-    }
     @PatchMapping("change-password")
-    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request,Principal connectedUser){
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request,Principal connectedUser) throws MessagingException{
         userService.changePassword(request, connectedUser);
         return ResponseEntity.ok().build();
     }

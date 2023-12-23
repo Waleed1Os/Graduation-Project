@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.0</version>
+		<version>3.2.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.graduationproject</groupId>
@@ -24,7 +24,7 @@
 		<dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-tomcat</artifactId>
-    <version>3.2.0</version>
+    <version>3.2.1</version>
     <scope>provided</scope>
 </dependency>
 		<dependency>
@@ -89,7 +89,7 @@
 		<dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-mail</artifactId>
-    <version>3.2.0</version>
+    <version>3.2.1</version>
 </dependency>
 <dependency>
     <groupId>org.springframework</groupId>
@@ -102,8 +102,11 @@
     <artifactId>spring-messaging</artifactId>
     <version>6.1.2</version>
 </dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>

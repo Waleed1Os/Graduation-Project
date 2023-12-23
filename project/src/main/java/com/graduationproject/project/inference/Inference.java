@@ -1,11 +1,10 @@
 package com.graduationproject.project.inference;
 
 import java.util.Date;
-import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.graduationproject.project.user.User;
 
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,17 +28,16 @@ import lombok.Builder.Default;
 @Builder
 @Table(name = "inferences")
 public class Inference {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne(targetEntity = User.class,fetch = FetchType.LAZY)
+    @JsonBackReference
     private User user;
     private String query;
     private String response;
     private Date whenMade;
     @Default
     private boolean correct=true;
-    @ElementCollection(fetch = FetchType.LAZY,targetClass = String.class)
-    private List<String> incorrectWords;
+    private String incorrectWords;//Will be saved as CSV
 }

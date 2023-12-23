@@ -36,7 +36,6 @@ private final SupportSessionRepository sessionRepository;
 private final ModelMapper modelMapper;
 @Override
 public void banOrUnBanUserByUsername(BanRequest banRequest,Principal connectedUser) {
-   
    final User admin = Utils.getConnectedUser(connectedUser);
    final User client = userRepository.findByUsername(banRequest.getClientUsername()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
    final BannedUser bannedUser = BannedUser.builder()
@@ -46,8 +45,9 @@ public void banOrUnBanUserByUsername(BanRequest banRequest,Principal connectedUs
    .reason(banRequest.getReason())
    .build();
    admin.addBanRequest(bannedUser);
-   client.setNotBanned(false);
+   client.setNotBanned(!client.isNotBanned());
    userRepository.saveAll(List.of(admin,client));
+   //TODO: Send email message to client when unbanned
 }
 
 

@@ -1,5 +1,6 @@
 package com.graduationproject.project.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.graduationproject.project.customersupport.SupportSession;
 import com.graduationproject.project.feedback.Feedback;
 import com.graduationproject.project.inference.Inference;
@@ -20,6 +21,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -44,7 +46,9 @@ public class User implements UserDetails {
     private String email;
     @Column(nullable = false)
     private String password;
-    @OneToMany(mappedBy = "user",targetEntity = Inference.class)
+    @OneToMany(mappedBy =    "user",targetEntity = Inference.class,fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @OrderBy("when_made")
     private List<Inference> inferences; 
     @Enumerated(EnumType.STRING)
     private Role role;
