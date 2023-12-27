@@ -7,19 +7,15 @@ import com.graduationproject.project.customersupport.SupportSession;
 import com.graduationproject.project.feedback.FeedbackDTO;
 import com.graduationproject.project.user.Role;
 
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-public class UserInfoForAdmins {
-private String userName;
-private String email;
-private String firstName;
-private String lastName;
-private boolean notBanned;
-private Role role;
-private Date premium;
-private List<FeedbackDTO> feedbacks;
-private List<SupportSession> supportSessions;    
+public record UserInfoForAdmins(String userName,
+ String email,
+ String firstName,
+ String lastName,
+ boolean notBanned,
+ Role role,
+ Date premium,
+ List<FeedbackDTO> feedbacks,
+ List<SupportSession> supportSessions) {
+ 
 }

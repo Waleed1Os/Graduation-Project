@@ -2,6 +2,7 @@ package com.graduationproject.project.customersupport;
 
 import java.util.List;
 
+import com.graduationproject.Ownable;
 import com.graduationproject.project.customersupport.chatmessage.Message;
 import com.graduationproject.project.user.User;
 
@@ -24,8 +25,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @Getter
+@Setter
 @Table(name = "support_sessions")
-public class SupportSession {
+public class SupportSession implements Ownable{
    @Setter
    private boolean closed;
    @OneToMany(mappedBy = "session",targetEntity = Message.class)

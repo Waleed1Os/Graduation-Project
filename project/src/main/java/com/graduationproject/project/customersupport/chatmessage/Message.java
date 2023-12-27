@@ -2,6 +2,7 @@ package com.graduationproject.project.customersupport.chatmessage;
 
 import java.util.Date;
 
+import com.graduationproject.Ownable;
 import com.graduationproject.project.customersupport.SupportSession;
 import com.graduationproject.project.user.User;
 
@@ -16,14 +17,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
+@Setter
 @Table(name = "session_messages")
-public class Message {
+public class Message implements Ownable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

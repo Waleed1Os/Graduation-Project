@@ -16,6 +16,10 @@ import com.graduationproject.project.Utils;
 import com.graduationproject.project.customersupport.SupportSession;
 import com.graduationproject.project.customersupport.SupportSessionRepository;
 import com.graduationproject.project.customersupport.chatmessage.Message;
+import com.graduationproject.project.feedback.Feedback;
+import com.graduationproject.project.feedback.FeedbackDTO;
+import com.graduationproject.project.feedback.FeedbackRepository;
+import com.graduationproject.project.feedback.FeedbackType;
 import com.graduationproject.project.inference.Inference;
 import com.graduationproject.project.inference.InferenceRepository;
 import com.graduationproject.project.inference.InferenceDTO;
@@ -34,15 +38,16 @@ private final UserRepository userRepository;
 private final InferenceRepository inferenceRepository;
 private final SupportSessionRepository sessionRepository;
 private final ModelMapper modelMapper;
+private final FeedbackRepository feedbackRepository;
 @Override
 public void banOrUnBanUserByUsername(BanRequest banRequest,Principal connectedUser) {
    final User admin = Utils.getConnectedUser(connectedUser);
-   final User client = userRepository.findByUsername(banRequest.getClientUsername()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+   final User client = userRepository.findByUsername(banRequest.clientUsername()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
    final BannedUser bannedUser = BannedUser.builder()
    .admin(admin)
    .whenBanned(new Date())
    .client(client)
-   .reason(banRequest.getReason())
+   .reason(banRequest.reason())
    .build();
    admin.addBanRequest(bannedUser);
    client.setNotBanned(!client.isNotBanned());
@@ -54,10 +59,10 @@ public void banOrUnBanUserByUsername(BanRequest banRequest,Principal connectedUs
 @Override
 // @Cacheable("sessions")
 public void replyToFeedbck(MessageRequest messageRequest,Principal connectedUser) {
-final SupportSession session = sessionRepository.findById(messageRequest.getSessionId()).orElseThrow();
+final SupportSession session = sessionRepository.findById(messageRequest.sessionId()).orElseThrow();
 final User admin = Utils.getConnectedUser(connectedUser);
 final Message message = Message.builder()
-.message(messageRequest.getMessage())
+.message(messageRequest.message())
 .whenSent(new Date())
 .session(session)
 .user(admin)
@@ -89,6 +94,17 @@ public UserInfoForAdmins getUserInformationByEmail(String email) {
    
 
 }
+
+
+@Override
+public List<FeedbackDTO> getFeedbacksByType(Pageable pageable,FeedbackType type) {
+   Page<Feedback> page = feedbackRepository.findByType(pageable,type);
+   return page.getContent().stream()
+   .map(feedback -> modelMapper.map(page,FeedbackDTO.class))
+   .collect(Collectors.toList());
+
+}
+
 
     
     

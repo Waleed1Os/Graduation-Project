@@ -3,6 +3,7 @@ package com.graduationproject.project.feedback;
 
 import java.util.Date;
 
+import com.graduationproject.Ownable;
 import com.graduationproject.project.user.User;
 
 import jakarta.persistence.Entity;
@@ -19,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 
@@ -26,9 +28,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Getter
+@Setter
 @Entity
 @Table(name = "feedbacks")
-public class Feedback {
+public class Feedback implements Ownable{
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private Integer id;

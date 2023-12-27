@@ -7,6 +7,7 @@ import com.graduationproject.project.inference.Inference;
 import com.graduationproject.project.subscription.Subscription;
 import com.graduationproject.project.token.Token;
 
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,9 +40,11 @@ import lombok.Builder.Default;
 @Getter
 @Setter
 @Table(name = "users")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements UserDetails {
     private String firstName,lastName;
     @Id
+    @EqualsAndHashCode.Include
     private String username;
     @Column(unique = true,nullable = false,updatable = false)
     private String email;
@@ -112,5 +116,16 @@ public void addBanRequest(BannedUser bannedUser){
     this.bannedUsers.add(bannedUser);
 }
    
-    
+// @Override
+// public boolean equals(Object object){
+//     if (object==this) {
+//         return true;
+//     }
+//     if(object==null||getClass()!=object.getClass()){
+//     return false;
+// }
+// final User user = (User)object;
+// return user.getUsername().equals(this.username);
+// }    
+
 }

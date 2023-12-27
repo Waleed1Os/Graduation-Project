@@ -2,6 +2,7 @@ package com.graduationproject.project.subscription;
 
 import java.util.Date;
 
+import com.graduationproject.Ownable;
 import com.graduationproject.project.user.User;
 
 import jakarta.persistence.Entity;
@@ -18,14 +19,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @Builder
 @Getter
+@Setter
 @Table(name = "subscriptions")
-public class Subscription {
+public class Subscription implements Ownable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

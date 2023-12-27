@@ -3,6 +3,7 @@ package com.graduationproject.project.inference;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.graduationproject.Ownable;
 import com.graduationproject.project.user.User;
 
 import jakarta.persistence.Entity;
@@ -27,7 +28,7 @@ import lombok.Builder.Default;
 @NoArgsConstructor
 @Builder
 @Table(name = "inferences")
-public class Inference {
+public class Inference implements Ownable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

@@ -8,12 +8,15 @@ import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.AlreadyBuiltException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graduationproject.project.Checker;
+import com.graduationproject.project.Utils;
 import com.graduationproject.project.configuration.JwtService;
 import com.graduationproject.project.token.Token;
 import com.graduationproject.project.token.TokenRepository;
@@ -35,35 +38,39 @@ private final PasswordEncoder passwordEncoder;
 private final AuthenticationManager authenticationManager;
 
 
-public String register(RegisterRequest request) {
-final String email= request.getEmail();
+public AuthenticationResponse register(RegisterRequest request) {
+final String email= request.email();
 if(!Checker.checkEmail(email)){
     throw new InputMismatchException("Email is not correct"); 
+}
+
+if(userRepository.existsByUsername(request.username())){
+  throw new AlreadyBuiltException("UserName has been already used");
 }
 final User user = User
 .builder()
 .whenCreated(new Date())
 .email(email)
-.firstName(request.getFirstName())
-.lastName(request.getLastName())
-.password(passwordEncoder.encode(request.getPassword()))
+.firstName(request.firstName())
+.lastName(request.lastName())
+.password(passwordEncoder.encode(request.password()))
 .role(Role.CLIENT)
-.username(request.getUsername()).build();
-//final User savedUser=
-userRepository.save(user);
-// final String accessToken=jwtService.generateToken(user);
-// final String refreshToken=jwtService.generateRefreshToken(user);
-// saveUserToken(accessToken, savedUser);
-// return AuthenticationResponse
-// .builder()
-// .accessToken(accessToken)
-// .refreshToken(refreshToken).build();
-return "Welcome";
+.username(request.username()).build();
+final User savedUser = userRepository.save(user);
+final String accessToken=jwtService.generateToken(user);
+final String refreshToken=jwtService.generateRefreshToken(user);
+saveUserToken(accessToken, savedUser);
+return AuthenticationResponse
+.builder()
+.accessToken(accessToken)
+.refreshToken(refreshToken).build();
 }
 public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest){
-final String usernameOrEmail=authenticationRequest.getPrinciple();    
-authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usernameOrEmail,authenticationRequest.getPassword()));
-final User user = Checker.checkEmail(usernameOrEmail)?userRepository.findByEmail(usernameOrEmail).orElseThrow():userRepository.findByUsername(usernameOrEmail).orElseThrow();
+final String usernameOrEmail=authenticationRequest.principle();    
+//I made this code to reduce queries to DB so instead of loading the user again from DB i get the authenticated user as soon as it is confirmed to be authenticated
+final Authentication principal = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usernameOrEmail,authenticationRequest.password()));
+final User user = Utils.getConnectedUser(principal);
+// Checker.checkEmail(usernameOrEmail)?userRepository.findByEmail(usernameOrEmail).orElseThrow():userRepository.findByUsername(usernameOrEmail).orElseThrow();
 final String accessToken=jwtService.generateToken(user);
 final String refreshToken=jwtService.generateRefreshToken(user);
 revokeAllUserTokens(user);

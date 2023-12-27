@@ -27,7 +27,7 @@ public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody Authenti
     return ResponseEntity.ok(authenticationService.authenticate(request));
 } 
 @PostMapping("/signup")
-public ResponseEntity<String> register(@RequestBody RegisterRequest request){
+public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
     return ResponseEntity.ok(authenticationService.register(request));
 }
 @PostMapping("/refresh-token")

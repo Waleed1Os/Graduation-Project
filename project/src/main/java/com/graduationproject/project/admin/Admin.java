@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
+import com.graduationproject.project.feedback.FeedbackDTO;
+import com.graduationproject.project.feedback.FeedbackType;
 import com.graduationproject.project.inference.InferenceDTO;
 
 public interface Admin {
@@ -14,4 +16,5 @@ public interface Admin {
     public UserInfoForAdmins getUserInformationByEmail(String email);
     public void replyToFeedbck(MessageRequest message,Principal connectedUser);
     public List<InferenceDTO> getReportedResponses(Pageable pageable);
+    public List<FeedbackDTO> getFeedbacksByType(Pageable pageable,FeedbackType type);
 }

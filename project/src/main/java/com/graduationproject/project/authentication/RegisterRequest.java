@@ -3,16 +3,11 @@ package com.graduationproject.project.authentication;
 
 
 
-import lombok.Getter;
-import lombok.Setter;
 
+public record RegisterRequest(String firstName,
+ String lastName,    
+ String username,
+ String email,
+ String password) {
 
-@Getter
-@Setter
-public class RegisterRequest {
-private String firstName;
-private String lastName;    
-private String username;
-private String email;
-private String password;
 }
