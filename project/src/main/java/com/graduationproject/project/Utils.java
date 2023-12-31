@@ -4,7 +4,6 @@ import java.security.Principal;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import com.graduationproject.Ownable;
 import com.graduationproject.project.user.User;
 
 import jakarta.security.auth.message.AuthException;
@@ -26,6 +25,11 @@ public static boolean isTheOwner(User user,Ownable iten){
 
 /**
  * makes the item unrelated to the user by making the user null so we avoid removing the item from DB
+ * it also uses the {@Code
+ * <p> <pre>
+ * public static boolean isTheOwner(User user,Ownable iten){
+ *  return iten.getUser().equals(user);}
+ *   }</pre>
  * @throws AuthException if the user is not the owner of the item
  */
 public static void unrelateToUser(User user,Ownable item) throws AuthException{

@@ -1,7 +1,6 @@
 package com.graduationproject.project.inference;
 
 import java.util.Date;
-import java.util.List;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,14 +16,15 @@ private String query;
 private String response;
 private Date whenMade;
 private boolean correct;    
-private List<String> incorrectWords;
+private String incorrectWords;
 
-public InferenceDTO(Integer id, String query, String response, Date whenMade, boolean correct) {
+public InferenceDTO(Integer id, String query, String response, Date whenMade, boolean correct,String incorrectWords) {
     this.id = id;
     this.query = query;
     this.response = response;
     this.whenMade = whenMade;
     this.correct = correct;
+    this.incorrectWords = incorrectWords;
 }
 
 }

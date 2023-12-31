@@ -2,7 +2,7 @@ package com.graduationproject.project.customersupport;
 
 import java.util.List;
 
-import com.graduationproject.Ownable;
+import com.graduationproject.project.Ownable;
 import com.graduationproject.project.customersupport.chatmessage.Message;
 import com.graduationproject.project.user.User;
 

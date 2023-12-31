@@ -2,7 +2,7 @@ package com.graduationproject.project.subscription;
 
 import java.util.Date;
 
-import com.graduationproject.Ownable;
+import com.graduationproject.project.Ownable;
 import com.graduationproject.project.user.User;
 
 import jakarta.persistence.Entity;

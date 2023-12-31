@@ -27,13 +27,22 @@ public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody Authenti
     return ResponseEntity.ok(authenticationService.authenticate(request));
 } 
 @PostMapping("/signup")
-public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
-    return ResponseEntity.ok(authenticationService.register(request));
+public ResponseEntity<?> register(@RequestBody RegisterRequest request){
+    final var response = authenticationService.register(request);
+    if (request.tfaEnabled()) {
+        return ResponseEntity.ok(response);
+    }
+    return ResponseEntity.accepted().build();
 }
 @PostMapping("/refresh-token")
 public void refreshToken(HttpServletRequest request,
       HttpServletResponse response) throws IOException{
     authenticationService.refreshToken(request,response);
+}
+
+@PostMapping("/verify")
+public ResponseEntity<?> verifyCode(@RequestBody VerificationRequest verificationRequest){
+return ResponseEntity.ok(authenticationService.verifyCode(verificationRequest));
 }
 
 }

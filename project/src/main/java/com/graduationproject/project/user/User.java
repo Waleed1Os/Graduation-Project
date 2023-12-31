@@ -70,11 +70,17 @@ public class User implements UserDetails {
     private List<Token> tokens;
     @Default
     private boolean notBanned=true;
+    private boolean tfaEnabled;
+    private String secret;
     public boolean clearHistory(){
-        if(!this.inferences.isEmpty()){
-        this.inferences.clear();
-        return true;}
-        return false;
+        if(this.inferences.isEmpty()){
+     return false;
+        }
+        //Unrelating to the user
+        for (Inference inference : this.inferences) 
+        inference.setUser(null);
+        return true;
+        
     }
 
     @Override

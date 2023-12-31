@@ -5,16 +5,11 @@ import java.util.List;
 
 import com.graduationproject.project.inference.InferenceDTO;
 
-import lombok.Getter;
-import lombok.Setter;
 
 
-@Getter
-@Setter
-public class UserDTO {
-private String firstName,lastName;
-private String username;
-private String email;
-private List<InferenceDTO> inferences; 
-private Date whenCreated;
+public record UserDTO(String firstName,String lastName,
+ String username,
+ String email,
+ List<InferenceDTO> inferences, 
+ Date whenCreated) {
 }
