@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.graduationproject.project.Checkers;
+
 import jakarta.security.auth.message.AuthException;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -39,5 +42,11 @@ public ResponseEntity<?> reportFalseResponse(@PathVariable int id,@RequestBody L
 inferenceService.reportFalseResponse(id, incorrectWords, principal);
 return ResponseEntity.ok().build();
 }
+
+@PostMapping("infere")
+public void infereAI(@Pattern(regexp = Checkers.INFERENCE_TO_AI_REGEX) @RequestBody String query,Principal connedctedUser){    
+inferenceService.infereAI(query,connedctedUser);
+
+} 
 
 }

@@ -14,6 +14,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+// import com.graduationproject.project.authentication.LoginFailureHandler;
+
 import lombok.RequiredArgsConstructor;
 
 @EnableWebSecurity
@@ -24,6 +26,7 @@ public class SecurityConfiguration {
 private final JwtAuthenticationFilter authenticationFilter;    
 private final LogoutHandler logoutHandler;
 private final AuthenticationProvider authenticationProvider;
+// private final LoginFailureHandler loginFailureHandler;
     @Bean
     public SecurityFilterChain httpSecurity(HttpSecurity http) throws Exception{
         http
@@ -32,6 +35,7 @@ private final AuthenticationProvider authenticationProvider;
         .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .authenticationProvider(authenticationProvider)
+        // .formLogin(formLogin -> formLogin.failureHandler(loginFailureHandler))
         .cors(CorsConfigurer::disable)
         .logout(logout->logout.addLogoutHandler(logoutHandler).logoutSuccessHandler(
         (request, response, authentication) -> SecurityContextHolder.clearContext()).logoutUrl("api/v1/auth/logout")

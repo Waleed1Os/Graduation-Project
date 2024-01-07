@@ -1,6 +1,7 @@
 package com.graduationproject.project.authentication;
 
-public record AuthenticationRequest(String principle,
-          String password) {
+import jakarta.validation.constraints.NotNull;
 
-}
+public record AuthenticationRequest(
+   @NotNull String principle,
+   @NotNull String password) {}

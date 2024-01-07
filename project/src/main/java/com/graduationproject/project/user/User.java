@@ -24,6 +24,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -72,6 +74,11 @@ public class User implements UserDetails {
     private boolean notBanned=true;
     private boolean tfaEnabled;
     private String secret;
+    @Min(value = 0)
+    @Max(value = 3)
+    private int failedLogins;
+    @Default
+    private boolean nonLocked = true;
     public boolean clearHistory(){
         if(this.inferences.isEmpty()){
      return false;
@@ -104,7 +111,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.notBanned;
+        return this.nonLocked;
     }
 
     @Override
@@ -114,14 +121,17 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-       return true;
+       return this.notBanned;
     }
 
 public void addBanRequest(BannedUser bannedUser){
     bannedUser.setAdmin(this);
     this.bannedUsers.add(bannedUser);
 }
-   
+public void incrementFailures(){
+    if(this.failedLogins<3)
+    this.failedLogins++;
+}   
 // @Override
 // public boolean equals(Object object){
 //     if (object==this) {

@@ -113,7 +113,7 @@
 		<dependency>
 			<groupId>ognl</groupId>
 			<artifactId>ognl</artifactId>
-			<version>3.4.2</version> <!-- Check for the latest version -->
+			<version>3.4.2</version>
 		</dependency>
 	</dependencies>
 	<build>

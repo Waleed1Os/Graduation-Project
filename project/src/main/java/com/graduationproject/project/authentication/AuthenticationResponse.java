@@ -7,10 +7,10 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.Builder;
 
 @Builder
-@JsonInclude(content = Include.NON_EMPTY)
+@JsonInclude(value = Include.NON_EMPTY)
 public record AuthenticationResponse(
     @JsonProperty("access-token") String accessToken,
-    @JsonProperty("refresh-token")    String refreshToken,
+    @JsonProperty("refresh-token") String refreshToken,
     boolean tfaEnabled,
     String secretImageURi
     ) {}

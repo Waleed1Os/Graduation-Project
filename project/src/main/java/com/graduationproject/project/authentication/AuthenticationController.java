@@ -28,11 +28,11 @@ public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody Authenti
 } 
 @PostMapping("/signup")
 public ResponseEntity<?> register(@RequestBody RegisterRequest request){
-    final var response = authenticationService.register(request);
+    final AuthenticationResponse response = authenticationService.register(request);
     if (request.tfaEnabled()) {
         return ResponseEntity.ok(response);
     }
-    return ResponseEntity.accepted().build();
+    return ResponseEntity.accepted().body(response);
 }
 @PostMapping("/refresh-token")
 public void refreshToken(HttpServletRequest request,
