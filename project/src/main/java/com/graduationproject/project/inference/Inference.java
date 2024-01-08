@@ -40,6 +40,5 @@ public class Inference implements Ownable{
     private Date whenMade;
     @Default
     private boolean correct=true;
-    @Default
-    private String incorrectWords="";//Will be saved as CSV
+    private String incorrectWords;//Will be saved as CSV
 }

@@ -35,6 +35,7 @@ private final AuthenticationProvider authenticationProvider;
         .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .authenticationProvider(authenticationProvider)
+        // .requiresChannel(requiresChannel -> requiresChannel.anyRequest().requiresSecure())//using https
         // .formLogin(formLogin -> formLogin.failureHandler(loginFailureHandler))
         .cors(CorsConfigurer::disable)
         .logout(logout->logout.addLogoutHandler(logoutHandler).logoutSuccessHandler(

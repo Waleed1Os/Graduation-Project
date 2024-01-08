@@ -14,7 +14,10 @@ import lombok.experimental.UtilityClass;
  * A class used to reduce the amount of code used to do some tasks
  */
 public class Utils {
-
+/**
+ * @param connedctedUser The user which has been authenticated with JWT
+ * @return Casted Principal object to User object 
+ */
 public static User getConnectedUser(Principal connedctedUser){
 return (User)((UsernamePasswordAuthenticationToken)connedctedUser).getPrincipal();
 }

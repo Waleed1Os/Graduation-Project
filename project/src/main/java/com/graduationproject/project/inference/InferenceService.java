@@ -17,7 +17,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class InferenceService {
-private final InferenceRepository inferenceRepository;    
+private final InferenceRepository inferenceRepository;   
+ 
 public List<InferenceDTO> getInferences(Pageable pageable,Principal connectedUser){
 final User user = Utils.getConnectedUser(connectedUser);
 return inferenceRepository.findByUsertDTO(user, pageable).getContent(); 
