@@ -13,7 +13,7 @@ import lombok.experimental.UtilityClass;
 public class Checkers {
 public static final String PHONE_NUMBER_REGEX = "/^(009665|9665|\\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/";
 public static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,5}$";
-public static final String INFERENCE_TO_AI_REGEX = "[\\u0600-\\u06FF\\s\\d]+";
+public static final String INFERENCE_TO_AI_REGEX = "^[[\u0621-\u064A0-9]\\s\\d]+$";
   /**
   *@param email is the email you want to check its validity using the regex
   *<p>

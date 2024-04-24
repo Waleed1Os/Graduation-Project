@@ -36,8 +36,6 @@ public static boolean isTheOwner(User user,Ownable iten){
  * @throws AuthException if the user is not the owner of the item
  */
 public static void unrelateToUser(User user,Ownable item) throws AuthException{
-    System.out.println(user.toString());
-    System.out.println(item.getUser());
     if(!isTheOwner(user, item)){
         throw new AuthException("Unaothorized");
     }

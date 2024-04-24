@@ -4,7 +4,7 @@ import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.domain.Pageable;
+// import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 // import com.graduationproject.project.Checkers;
@@ -19,14 +19,22 @@ import lombok.RequiredArgsConstructor;
 public class InferenceService {
 private final InferenceRepository inferenceRepository;   
  
-public List<InferenceDTO> getInferences(Pageable pageable,Principal connectedUser){
+public List<InferenceDTO> getInferences(
+   // Pageable pageable,
+   Principal connectedUser){
 final User user = Utils.getConnectedUser(connectedUser);
-return inferenceRepository.findByUsertDTO(user, pageable).getContent(); 
+return inferenceRepository.findByUsertDTO(user
+// ,pageable
+);
+// .getContent(); 
 }
+
+
 public InferenceResponse infereAI(String query,Principal connectedUser){
 // if(!Checkers.checkQuery(query)){
 //    return null;//Or throw maybe
 // }   
+
 final User user = Utils.getConnectedUser(connectedUser);
 final Inference inference = Inference.builder()
 .query(query)

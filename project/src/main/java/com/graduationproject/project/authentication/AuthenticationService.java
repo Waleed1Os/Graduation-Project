@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graduationproject.project.Checkers;
 import com.graduationproject.project.Utils;
 import com.graduationproject.project.configuration.JwtService;
+import com.graduationproject.project.mail.EMailSender;
 import com.graduationproject.project.tfa.TfaService;
 import com.graduationproject.project.token.Token;
 import com.graduationproject.project.token.TokenRepository;
@@ -25,6 +26,8 @@ import com.graduationproject.project.user.Role;
 import com.graduationproject.project.user.User;
 import com.graduationproject.project.user.UserRepository;
 
+import dev.samstevens.totp.exceptions.CodeGenerationException;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +41,8 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
   private final TfaService tfaService;
+ private final EMailSender eMailSender;
+
 
   public AuthenticationResponse register(RegisterRequest request) {
     // resolved this with @Pattern annotation
@@ -61,15 +66,17 @@ public class AuthenticationService {
         .password(passwordEncoder.encode(request.password()))
         .role(Role.CLIENT)
         .tfaEnabled(request.tfaEnabled())
-        .username(request.username()).build();
-    if (request.tfaEnabled()) {
-      user.setSecret(tfaService.generateNewSecret());
-      userRepository.save(user);
-      return AuthenticationResponse.builder()
-          .tfaEnabled(true)
-          .secretImageURi(tfaService.generateQrCodeImageUri(user.getSecret()))
-          .build();
-    }
+        .username(request.username()).
+        pfp(request.pfp()).build();
+    // if (request.tfaEnabled()) {
+      // user.setSecret(tfaService.generateNewSecret());
+      // userRepository.save(user);
+      // return AuthenticationResponse.builder()
+          // .tfaEnabled(true)
+          // .secretImageURi(tfaService.generateQrCodeImageUri(user.getSecret()))
+          // .build();
+    // }
+    user.setSecret(tfaService.generateNewSecret());
     userRepository.save(user);
     final String accessToken = jwtService.generateToken(user);
     final String refreshToken = jwtService.generateRefreshToken(user);
@@ -89,13 +96,13 @@ public class AuthenticationService {
     final Principal principal = authenticationManager
         .authenticate(new UsernamePasswordAuthenticationToken(usernameOrEmail, authenticationRequest.password()));
     final User user = Utils.getConnectedUser(principal);
-    if (user.isTfaEnabled()) {
-      return AuthenticationResponse
-      .builder()
-      .tfaEnabled(true)
-      .secretImageURi(tfaService.generateQrCodeImageUri(user.getSecret()))
-      .build();
-    }
+    // if (user.isTfaEnabled()) {
+    //   return AuthenticationResponse
+    //   .builder()
+    //   .tfaEnabled(true)
+    //   .secretImageURi(tfaService.generateQrCodeImageUri(user.getSecret()))
+    //   .build();
+    // }
     revokeAllUserTokens(user);
     final String refreshToken = jwtService.generateRefreshToken(user);
     final String accessToken = jwtService.generateToken(user);
@@ -172,9 +179,25 @@ public class AuthenticationService {
     return AuthenticationResponse.builder()
         .accessToken(accessToken)
         .refreshToken(refreshToken)
-        .tfaEnabled(true)
+        // .tfaEnabled(true)
         .build();
 
+  }
+
+public void resetPassword(String email) throws MessagingException, CodeGenerationException {
+   if(!userRepository.existsByEmail(email)){
+    throw new UsernameNotFoundException("No account with this email was found");
+   }
+   final User user = userRepository.findByEmail(email).get();
+   eMailSender.sendEmail(email, "Reset password", "OTP is valid for 30 seconds:\n"+tfaService.generateTextOTP(user.getSecret()));
+}
+
+public boolean isEmailReserved(String email){
+return userRepository.existsByEmail(email);
+}
+
+public boolean isUsernameReserved(String username){
+  return userRepository.existsByEmail(username);
   }
 
 }

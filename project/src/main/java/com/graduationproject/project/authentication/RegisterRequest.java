@@ -1,6 +1,7 @@
 package com.graduationproject.project.authentication;
 
 
+
 // import com.graduationproject.project.Checkers;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -16,4 +17,5 @@ String username,
 @Email(message = "Invalid email",flags = Flag.CASE_INSENSITIVE)
 String email,
 String password,
-boolean tfaEnabled) {}
+boolean tfaEnabled,
+byte[] pfp) {}

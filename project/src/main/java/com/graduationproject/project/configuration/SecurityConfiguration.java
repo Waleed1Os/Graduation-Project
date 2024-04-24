@@ -6,13 +6,13 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 // import com.graduationproject.project.authentication.LoginFailureHandler;
 
@@ -26,6 +26,7 @@ public class SecurityConfiguration {
 private final JwtAuthenticationFilter authenticationFilter;    
 private final LogoutHandler logoutHandler;
 private final AuthenticationProvider authenticationProvider;
+private final CorsConfigurationSource corsConfigurationSource;
 // private final LoginFailureHandler loginFailureHandler;
     @Bean
     public SecurityFilterChain httpSecurity(HttpSecurity http) throws Exception{
@@ -37,7 +38,7 @@ private final AuthenticationProvider authenticationProvider;
         .authenticationProvider(authenticationProvider)
         // .requiresChannel(requiresChannel -> requiresChannel.anyRequest().requiresSecure())//using https
         // .formLogin(formLogin -> formLogin.failureHandler(loginFailureHandler))
-        .cors(CorsConfigurer::disable)
+        .cors(cors -> cors.configurationSource(corsConfigurationSource))
         .logout(logout->logout.addLogoutHandler(logoutHandler).logoutSuccessHandler(
         (request, response, authentication) -> SecurityContextHolder.clearContext()).logoutUrl("api/v1/auth/logout")
             );

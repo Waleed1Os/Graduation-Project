@@ -32,7 +32,7 @@ return id;
 public void deleteFeedback(int id,Principal connectedUser){
 final User user = Utils.getConnectedUser(connectedUser);
 final Feedback feedback = feedbackRepository.findById(id).orElseThrow();
-if (!feedback.getUser().equals(user)) {
+if (!Utils.isTheOwner(user, feedback)) {
  throw new AccessDeniedException("Feedback is not related to this user");   
 }
 feedbackRepository.delete(feedback);

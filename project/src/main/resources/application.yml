@@ -26,7 +26,7 @@ spring:
     password: root
     username: root
     url: jdbc:mysql://localhost:3306/gp
-    driver-class-name: com.mysql.cj.jdbc.Driver  # MySQL driver class
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
     hibernate:
@@ -34,7 +34,7 @@ spring:
 server:
   error:
     include-message: always
-  #port: 443
+  port: 443
    #ssl:
       #key-store: keystore.p12
       #key-store-password: GP2023-2024

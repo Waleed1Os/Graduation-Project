@@ -21,6 +21,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
@@ -45,6 +46,8 @@ import lombok.Builder.Default;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements UserDetails {
     private String firstName,lastName;
+    @Lob
+    private byte[] pfp;
     @Id
     @EqualsAndHashCode.Include
     private String username;
@@ -52,7 +55,7 @@ public class User implements UserDetails {
     private String email;
     @Column(nullable = false)
     private String password;
-    @OneToMany(mappedBy =    "user",targetEntity = Inference.class,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",targetEntity = Inference.class,fetch = FetchType.LAZY)
     @JsonManagedReference
     @OrderBy("when_made")
     private List<Inference> inferences; 

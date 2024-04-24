@@ -8,7 +8,6 @@ package com.graduationproject.project.user;
 
 import java.io.IOException;
 import java.security.Principal;
-// import java.util.Date;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
@@ -38,10 +37,10 @@ private final UserRepository userRepository;
 private final PasswordEncoder passwordEncoder;
 private final EMailSender eMailSender;
 private final TfaService tfaService;
+private final ModelMapper modelMapper;
 public UserDTO getUser(String usernmae){
     User user=userRepository.findByUsername(usernmae).orElseThrow(()->new UsernameNotFoundException("User not found"));
-    ModelMapper mapper=new ModelMapper();
-    return mapper.map(user, UserDTO.class);
+    return modelMapper.map(user, UserDTO.class);
 }
 
 public void changePassword(ChangePasswordRequest request,Principal connectedUser) throws MessagingException{
@@ -54,7 +53,7 @@ if(!request.newPassword().equals(request.newPasswordConfirmation())){
 }
 user.setPassword(passwordEncoder.encode(request.newPassword()));
 userRepository.save(user);
-eMailSender.sendEmail(user.getEmail(),"Your Password has been Changed! ","changepassword",Map.of("name",user.getFirstName()));
+eMailSender.sendEmailWithTemplate(user.getEmail(),"Your Password has been Changed! ","changepassword",Map.of("name",user.getFirstName()));
 }
 public void ModifyAccount(ModifyAccountRequest request,Principal connectedUser){
 final User user = Utils.getConnectedUser(connectedUser);
@@ -93,6 +92,11 @@ if(tfaService.isOtpNotValid(user.getSecret(),code)){
 user.setTfaEnabled(true);
 userRepository.save(user);
 }
+
+public UserDTO getUser(Principal principal){
+final User user = Utils.getConnectedUser(principal);
+return new UserDTO(user.getFirstName(),user.getLastName(),user.getUsername(),user.getEmail(),user.getPremium(),user.getWhenCreated(),user.getPfp());    
+} 
 
 }
 

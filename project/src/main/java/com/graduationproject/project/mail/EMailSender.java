@@ -38,7 +38,7 @@ public EMailSender(JavaMailSender javaMailSender,TemplateEngine templateEngine) 
     }
     
     @Override
-    public void sendEmail(String to, String subject, String HTMLFileName,Map<String,Object> variables) throws MessagingException {
+    public void sendEmailWithTemplate(String to, String subject, String HTMLFileName,Map<String,Object> variables) throws MessagingException {
      final MimeMessage message = javaMailSender.createMimeMessage();
         final MimeMessageHelper helper = new MimeMessageHelper(message,StandardCharsets.UTF_8.name());
         helper.setFrom(serverEmail);
@@ -64,6 +64,15 @@ public EMailSender(JavaMailSender javaMailSender,TemplateEngine templateEngine) 
          message.setText(body);
          javaMailSender.send(message);
 
+    }
+
+    @Override
+    public void sendEmail(String to, String subject, String body) throws MessagingException {
+        final SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+        javaMailSender.send(message);
     }
     
 }
