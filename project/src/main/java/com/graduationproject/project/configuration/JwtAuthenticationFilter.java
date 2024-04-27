@@ -43,7 +43,6 @@ private final UserDetailsService userDetailsService;
         if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
             final UserDetails userDetails=userDetailsService.loadUserByUsername(username);
             // final boolean isStoredTokenValid = tokenRepository.findByToken(jwt).map(token-> !token.isExpired()&&!token.isRevoked()).orElse(false);
-
             if(jwtService.isTokenValid(userDetails, jwt)
             // &&isStoredTokenValid
             ){

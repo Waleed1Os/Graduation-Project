@@ -197,7 +197,7 @@ return userRepository.existsByEmail(email);
 }
 
 public boolean isUsernameReserved(String username){
-  return userRepository.existsByEmail(username);
+  return userRepository.existsByUsername(username);
   }
 
 }

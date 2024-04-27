@@ -22,8 +22,10 @@ public static User getConnectedUser(Principal connedctedUser){
 return (User)((UsernamePasswordAuthenticationToken)connedctedUser).getPrincipal();
 }
 
-public static boolean isTheOwner(User user,Ownable iten){
-   return iten.getUser().equals(user); 
+public static boolean isTheOwner(User user,Ownable item){
+    if(item==null)
+    return false;
+   return item.getUser().equals(user); 
 }
 
 /**

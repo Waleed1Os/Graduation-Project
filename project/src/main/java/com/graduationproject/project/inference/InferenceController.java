@@ -37,9 +37,9 @@ public class InferenceController {
     }
     
     @DeleteMapping("remove/{id}")
-    public ResponseEntity<?> deleteInference(@PathVariable int id,Principal connectedUser) throws AuthException{
+    public void deleteInference(@PathVariable int id,Principal connectedUser) throws AuthException{
+        // return ResponseEntity.ok(inferenceService.deleteInference(id, connectedUser));
         inferenceService.deleteInference(id, connectedUser);
-        return ResponseEntity.ok().build();
     }
     
     @PostMapping("Report/{id}")
@@ -50,8 +50,8 @@ public class InferenceController {
 @PostMapping("infere")
 public ResponseEntity<InferenceResponse> infereAI(
     // @Pattern(regexp = Checkers.INFERENCE_TO_AI_REGEX) 
-@RequestBody String query,Principal connedctedUser){    
-return new ResponseEntity<InferenceResponse>(inferenceService.infereAI(query,connedctedUser),HttpStatusCode.valueOf(200));
+@RequestBody InferenceRequest inferenceRequest,Principal connedctedUser){    
+return new ResponseEntity<InferenceResponse>(inferenceService.infereAI(inferenceRequest,connedctedUser),HttpStatusCode.valueOf(200));
 
 } 
 

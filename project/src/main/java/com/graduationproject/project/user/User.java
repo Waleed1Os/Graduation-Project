@@ -55,7 +55,7 @@ public class User implements UserDetails {
     private String email;
     @Column(nullable = false)
     private String password;
-    @OneToMany(mappedBy = "user",targetEntity = Inference.class,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",targetEntity = Inference.class,fetch = FetchType.EAGER)
     @JsonManagedReference
     @OrderBy("when_made")
     private List<Inference> inferences; 

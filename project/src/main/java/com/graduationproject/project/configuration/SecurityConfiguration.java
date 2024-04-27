@@ -39,9 +39,10 @@ private final CorsConfigurationSource corsConfigurationSource;
         // .requiresChannel(requiresChannel -> requiresChannel.anyRequest().requiresSecure())//using https
         // .formLogin(formLogin -> formLogin.failureHandler(loginFailureHandler))
         .cors(cors -> cors.configurationSource(corsConfigurationSource))
-        .logout(logout->logout.addLogoutHandler(logoutHandler).logoutSuccessHandler(
-        (request, response, authentication) -> SecurityContextHolder.clearContext()).logoutUrl("api/v1/auth/logout")
-            );
+        // .logout(logout->logout.addLogoutHandler(logoutHandler).logoutSuccessHandler(
+        // (request, response, authentication) -> SecurityContextHolder.clearContext()).logoutUrl("api/v1/auth/logout")
+        .logout(t -> t.addLogoutHandler(logoutHandler).logoutUrl("api/v1/auth/logout").logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()));
+            // );
         return http.build();
     } 
 }
