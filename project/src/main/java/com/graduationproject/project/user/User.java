@@ -55,7 +55,7 @@ public class User implements UserDetails {
     private String email;
     @Column(nullable = false)
     private String password;
-    @OneToMany(mappedBy = "user",targetEntity = Inference.class,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user",targetEntity = Inference.class,fetch = FetchType.LAZY)
     @JsonManagedReference
     @OrderBy("when_made")
     private List<Inference> inferences; 
@@ -65,7 +65,7 @@ public class User implements UserDetails {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "admin",targetEntity = BannedUser.class)
     private List<BannedUser> bannedUsers;
     private Date premium;
-    @OneToMany(mappedBy = "user",targetEntity = Subscription.class)
+    @OneToMany(mappedBy = "user",targetEntity = Subscription.class, fetch = FetchType.LAZY)
     private List<Subscription> subscriptions;
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<SupportSession> supportSessions;

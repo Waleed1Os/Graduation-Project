@@ -2,7 +2,6 @@ package com.graduationproject.project;
 
 
 
-// import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 // import org.springframework.cache.annotation.EnableCaching;
@@ -12,8 +11,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 
+
+
 @SpringBootApplication
 // @EnableCaching
+// @RequiredArgsConstructor
 public class ProjectApplication
 //  implements CommandLineRunner
  {
@@ -22,7 +24,7 @@ public class ProjectApplication
 	}
 
 	// @Override
-	// public void run(String... args) throws Exception {
+	// public void run(String... args)  {
 	// }
 	
 }

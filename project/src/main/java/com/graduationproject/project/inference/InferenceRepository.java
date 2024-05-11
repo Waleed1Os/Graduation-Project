@@ -21,5 +21,5 @@ public Page<InferenceDTO> findByCorrectDTO(@Param("correct") boolean correct,Pag
 public List<InferenceDTO> findByUsertDTO(@Param("user") User user
 // ,Pageable pageable
 );
-
+public List<Inference> findByUser(User user);
 }

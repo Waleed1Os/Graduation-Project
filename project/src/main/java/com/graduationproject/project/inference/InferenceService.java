@@ -33,9 +33,9 @@ final User user = Utils.getConnectedUser(connectedUser);
 // return inferenceRepository.findByUsertDTO(user
 // // ,pageable
 // );
-final List<InferenceDTO> list = user.getInferences().stream().map(inference -> modelMapper.map(inference,InferenceDTO.class)).collect(Collectors.toList());
+final List<InferenceDTO> list = inferenceRepository.findByUser(user).stream().map(inference -> modelMapper.map(inference,InferenceDTO.class)).collect(Collectors.toList());
 // .getContent(); 
-System.out.println(list);
+
 return list;
 }
 
@@ -56,6 +56,7 @@ final Inference inference = Inference.builder()
 .user(user)
 .whenMade(inferenceRequest.whenCreated())
 // .response(responseData)
+.response(inferenceRequest.query())
 .build();
 final int saveInferenceId = inferenceRepository.save(inference).getId();
 return InferenceResponse.builder()

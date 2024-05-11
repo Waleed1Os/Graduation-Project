@@ -42,7 +42,7 @@ feedbackRepository.delete(feedback);
 
 public List<FeedbackDTO> getFeedbacks(Principal connectedUser) {
 final User user = Utils.getConnectedUser(connectedUser);
-final List<FeedbackDTO> feedbackDTOs = user.getFeedbacks().stream().map(feedback -> modelMapper.map(feedback,FeedbackDTO.class)).collect(Collectors.toList()); 
+final List<FeedbackDTO> feedbackDTOs = feedbackRepository.findByUser(user).stream().map(feedback -> modelMapper.map(feedback,FeedbackDTO.class)).collect(Collectors.toList()); 
 return feedbackDTOs;
 
 }
