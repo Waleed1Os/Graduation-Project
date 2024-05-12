@@ -32,7 +32,7 @@ private final CorsConfigurationSource corsConfigurationSource;
     public SecurityFilterChain httpSecurity(HttpSecurity http) throws Exception{
         http
         .csrf(CsrfConfigurer::disable)
-        .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**","/subscription/plans").permitAll().anyRequest().authenticated())
+        .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**","/subscription/plans","/contact-us/**").permitAll().anyRequest().authenticated())
         .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .authenticationProvider(authenticationProvider)

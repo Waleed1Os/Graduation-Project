@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.stereotype.Service;
+// import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graduationproject.project.user.User;
@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @SuppressWarnings("unchecked")
-@Service
+// @Service
 public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler{
     private final UserRepository userRepository;
     @Override

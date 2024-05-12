@@ -6,10 +6,19 @@ application:
       refresh-token:
         expiration: 604800000
 hibernate:
+  connection:
+    characterEncoding: UTF-8
+    CharSet: UTF-8
+    useUnicode: true
   format_sql: true
   hbm2ddl:
     auto: update
 spring:
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
   mail:
     host: smtp.gmail.com
     port: 587
@@ -32,6 +41,9 @@ spring:
     hibernate:
       ddl-auto: update
 server:
+  tomcat:
+    uri-encoding: UTF-8
+
   error:
     include-message: always
   port: 443

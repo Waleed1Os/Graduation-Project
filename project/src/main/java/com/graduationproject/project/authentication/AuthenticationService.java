@@ -150,12 +150,9 @@ public class AuthenticationService {
           .orElseThrow(() -> new UsernameNotFoundException("User not found"));
       if (jwtService.isTokenValid(user, refreshToken)) {
         final String accessToken = jwtService.generateToken(user);
-        revokeAllUserTokens(user);
-        saveUserToken(accessToken, user);
         final AuthenticationResponse authResponse = AuthenticationResponse.builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken)
-
             .build();
         new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
       }

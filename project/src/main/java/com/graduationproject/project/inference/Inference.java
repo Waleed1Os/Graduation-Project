@@ -1,11 +1,13 @@
 package com.graduationproject.project.inference;
 
 import java.util.Date;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.graduationproject.project.Ownable;
 import com.graduationproject.project.user.User;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -40,5 +42,6 @@ public class Inference implements Ownable{
     private Date whenMade;
     @Default
     private boolean correct=true;
-    private String incorrectWords;//Will be saved as CSV
+    @ElementCollection
+    private Set<String> incorrectWords;//Will be saved as CSV
 }

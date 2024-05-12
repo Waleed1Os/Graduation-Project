@@ -2,6 +2,7 @@ package com.graduationproject.project.inference;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 // import org.springframework.data.domain.PageRequest;
 // import org.springframework.data.domain.Sort;
@@ -43,14 +44,16 @@ public class InferenceController {
     }
     
     @PostMapping("Report/{id}")
-    public ResponseEntity<?> reportFalseResponse(@PathVariable int id,@RequestBody List<String> incorrectWords,Principal principal) throws AuthException{
+    public ResponseEntity<?> reportFalseResponse(@PathVariable int id,@RequestBody Set<String> incorrectWords,Principal principal) throws AuthException{
         inferenceService.reportFalseResponse(id, incorrectWords, principal);
         return ResponseEntity.ok().build();
     }
-@PostMapping("infere")
+    
+@PostMapping(value ="infere",produces = "application/json; charset=UTF-8")
 public ResponseEntity<InferenceResponse> infereAI(
+    
     // @Pattern(regexp = Checkers.INFERENCE_TO_AI_REGEX) 
-@RequestBody InferenceRequest inferenceRequest,Principal connedctedUser){    
+    @RequestBody InferenceRequest inferenceRequest,Principal connedctedUser) {    
 return new ResponseEntity<InferenceResponse>(inferenceService.infereAI(inferenceRequest,connedctedUser),HttpStatusCode.valueOf(200));
 
 } 

@@ -56,7 +56,7 @@ public EMailSender(JavaMailSender javaMailSender,TemplateEngine templateEngine) 
     }
     
     @Override
-    public void getMessageFromUser(String email,String title,String body) {
+    public void getMessageFromUser(String email,String title,String body) throws MessagingException {
         final SimpleMailMessage message= new SimpleMailMessage();
          message.setFrom(serverEmail);
          message.setTo(serverEmail);

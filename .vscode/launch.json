@@ -17,6 +17,7 @@
             "request": "launch",
             "mainClass": "com.graduationproject.project.ProjectApplication",
             "projectName": "project"
+            
         }
     ]
 }

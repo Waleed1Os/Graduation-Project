@@ -2,6 +2,7 @@ package com.graduationproject.project.inference;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -40,28 +41,31 @@ return list;
 }
 
 
-public InferenceResponse infereAI(InferenceRequest inferenceRequest,Principal connectedUser){
+public InferenceResponse infereAI(InferenceRequest inferenceRequest,Principal connectedUser) {
 // if(!Checkers.checkQuery(query)){
 //    return null;//Or throw maybe
 // }   
-// RestTemplate restTemplate = new RestTemplate();
-//         HttpHeaders headers = new HttpHeaders();
-//         headers.setContentType(MediaType.TEXT_PLAIN);
-//         HttpEntity<String> request = new HttpEntity<>(query, headers);
-//         ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:5000/post_example", HttpMethod.POST, request, String.class);
-//         String responseData = response.getBody();
+   
+
+
+RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        HttpEntity<String> aiRequest = new HttpEntity<>(inferenceRequest.query(), headers);
+        ResponseEntity<String> response = restTemplate.exchange("http://127.0.0.1:5000/model/infere", HttpMethod.POST, aiRequest, String.class);
+        String responseData = response.getBody();
 final User user = Utils.getConnectedUser(connectedUser);
 final Inference inference = Inference.builder()
 .query(inferenceRequest.query())
 .user(user)
 .whenMade(inferenceRequest.whenCreated())
-// .response(responseData)
-.response(inferenceRequest.query())
+.response(responseData)
+// .response(inferenceRequest.query())
 .build();
 final int saveInferenceId = inferenceRepository.save(inference).getId();
 return InferenceResponse.builder()
 .id(saveInferenceId)
-.response(inferenceRequest.query()).build();//Will replace it with response once it is ready 
+.response(responseData).build();//Will replace it with response once it is ready 
 }
 
 public void deleteInference(int id,Principal principal) throws AuthException{
@@ -71,11 +75,10 @@ final Inference inference = inferenceRepository.findById(id).orElseThrow();
 //We didn't totally remove it from db as we might need it for training but it is no more related to the user
 Utils.unrelateToUser(user, inference);
 inferenceRepository.save(inference);
-System.out.println(true);
 
 }
 
-public void reportFalseResponse(int id,List<String> incorrectWords,Principal principal) throws AuthException{
+public void reportFalseResponse(int id,Set<String> incorrectWords,Principal principal) throws AuthException{
 
    if(incorrectWords.isEmpty()){
       return;
@@ -85,8 +88,7 @@ public void reportFalseResponse(int id,List<String> incorrectWords,Principal pri
  if(!Utils.isTheOwner(user, inference)){
     throw new AuthException();
  }
-inference.setCorrect(false);
-inference.setIncorrectWords(String.join(",", incorrectWords));
+inference.setIncorrectWords(incorrectWords);
 inferenceRepository.save(inference);
 }
 
